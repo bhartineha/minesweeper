@@ -35,6 +35,7 @@ The rules in Minesweeper are simple:
 1. Clone the git repo
 2. yarn install & yarn start
 
+<img width="823" alt="Screenshot 2023-04-11 at 4 17 07 PM" src="https://user-images.githubusercontent.com/14871556/231073469-f71ac821-b721-49aa-8dd2-52d6b49aee37.png">
 
 
 
