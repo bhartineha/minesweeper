@@ -12,10 +12,10 @@ The rules in Minesweeper are simple:
 
 # The primary components of a minesweeper game are:
 
-The board - 10 mines
-Header has mineCounter, Faces (hasWon, hasLost, resetFace), and Timer
-NumberDisplayed on board from 1,2,3,4,5,6,7,8
-Buttons on right clicked will be flag, else rest buttons would be empty or marked with number
+1. The board - 10 mines
+2. Header has mineCounter, Faces (hasWon, hasLost, resetFace), and Timer
+3. NumberDisplayed on board from 1,2,3,4,5,6,7,8
+4. Buttons on right clicked will be flag, else rest buttons would be empty or marked with number
 
 # Rules
 1. Flag that you don't want to reveal, you are guessing, it might have mines (on right-click).
