@@ -1,5 +1,8 @@
 # Minesweeper 💣 😵
 
+# Prerequisite -
+React.js, javascript, css etc
+
 # How to play
 The rules in Minesweeper are simple:
 
@@ -27,6 +30,11 @@ The rules in Minesweeper are simple:
 4. Set empty squares and check if surrounding squares are blank next to it then search for another surrounding squares in upward direction.
 
 5. The player should also be able to start a new game if they haven’t finished their current game. 
+
+# Steps to run this application on local
+1. Clone the git repo
+2. yarn install & yarn start
+
 
 
 
