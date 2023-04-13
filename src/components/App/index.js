@@ -11,12 +11,12 @@ const App = () => {
   const [mineCounter, setMineCounter] = useState(10);
   const [time, setTime] = useState(0);
   const [face, setFace] = useState("😁");
-  const [isLive, setIsLive] = useState(false);
+  const [startGame, setStartGame] = useState(false);
   const [hasWon, setHasWon] = useState(false);
   const [hasLost, setHasLost] = useState(false);
 
   useEffect(() => {
-    if (isLive && !hasWon && !hasLost) {
+    if (startGame && !hasWon && !hasLost) {
       const interval = setInterval(() => {
         if (time < 1000) {
           setTime(time + 1);
@@ -27,16 +27,16 @@ const App = () => {
         clearInterval(interval);
       };
     }
-  }, [time, isLive, hasWon, hasLost]);
+  }, [time, startGame, hasWon, hasLost]);
 
-  const handleMouseDown = e => {
+  const handleMouseDown = (e) => {
     if (hasWon || hasLost) {
       return;
     }
     setFace("😮");
   };
 
-  const handleMouseUp = e => {
+  const handleMouseUp = (e) => {
     if (hasWon || hasLost) {
       return;
     }
@@ -52,12 +52,12 @@ const App = () => {
 
   useEffect(() => {
     if (hasWon) {
-      const newCells = cells.map(row =>
-        row.map(cell =>
+      const newCells = cells.map((row) =>
+        row.map((cell) =>
           cell.value === -1
             ? {
                 ...cell,
-                state: 1
+                state: 1,
               }
             : cell
         )
@@ -98,7 +98,7 @@ const App = () => {
     ));
   };
 
-  const handleButtonClick = (rowParam, colParam) => e => {
+  const handleButtonClick = (rowParam, colParam) => (e) => {
     e.preventDefault();
 
     if (hasWon || hasLost) {
@@ -108,7 +108,7 @@ const App = () => {
     let gameCells = cells;
     let cell = gameCells[rowParam][colParam];
 
-    if (!isLive) {
+    if (!startGame) {
       // if the click place has a bomb, reshuffle the board
       if (cell.value === -1) {
         let hasABomb = true;
@@ -124,7 +124,7 @@ const App = () => {
         cell = gameCells[rowParam][colParam];
       }
 
-      setIsLive(true);
+      setStartGame(true);
     }
 
     // only do something if state is zero
@@ -166,19 +166,20 @@ const App = () => {
     setCells(gameCells);
 
     if (availableNonBombSpaces === 0) {
-      gameCells.map(row => row.map(cell => ({ ...cell, state: 1 })));
+      gameCells.map((row) => row.map((cell) => ({ ...cell, state: 1 })));
       setHasWon(true);
     }
   };
 
-  const handleButtonContextMenu = (rowParam, colParam) => e => {
+  // handle right click on button to show flag and so
+  const handleButtonContextMenu = (rowParam, colParam) => (e) => {
     e.preventDefault();
 
     if (hasWon || hasLost) {
       return;
     }
 
-    if (!isLive) return;
+    if (!startGame) return;
 
     const cell = cells[rowParam][colParam];
 
@@ -201,11 +202,12 @@ const App = () => {
     setMineCounter(mineCounter + 1);
   };
 
-  const handleFaceClick = e => {
+  // on click of face, reset board, time and so
+  const handleFaceClick = (e) => {
     e.preventDefault();
-    if (isLive) {
+    if (startGame) {
       setCells(generateCells());
-      setIsLive(false);
+      setStartGame(false);
       setMineCounter(10);
       setTime(0);
       setHasLost(false);
@@ -214,13 +216,13 @@ const App = () => {
     }
   };
 
-  const showAllBombs = cellsParam => {
-    return cellsParam.map(row =>
-      row.map(cell => {
+  const showAllBombs = (cellsParam) => {
+    return cellsParam.map((row) =>
+      row.map((cell) => {
         if (cell.value === -1) {
           return {
             ...cell,
-            state: 1
+            state: 1,
           };
         }
         return cell;
@@ -323,6 +325,34 @@ const App = () => {
 
     return newCells;
   };
+
+  // storing the states into localstorage
+  useEffect(() => {
+    const gameState = {
+      cells,
+      mineCounter,
+      time,
+      face,
+      startGame,
+      hasWon,
+      hasLost,
+    };
+    localStorage.setItem("minesweeper-game", JSON.stringify(gameState));
+  }, [cells, mineCounter, time, face, startGame, hasWon, hasLost]);
+
+  useEffect(() => {
+    const savedGameState = localStorage.getItem("minesweeper-game");
+    if (savedGameState) {
+      const gameState = JSON.parse(savedGameState);
+      setCells(gameState.cells);
+      setMineCounter(gameState.mineCounter);
+      setTime(gameState.time);
+      setFace(gameState.face);
+      setStartGame(gameState.startGame);
+      setHasWon(gameState.hasWon);
+      setHasLost(gameState.hasLost);
+    }
+  }, []);
 
   return (
     <div className="App">

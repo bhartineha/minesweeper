@@ -22,7 +22,7 @@ const generateCells = () => {
     }
   }
 
-  // calculate the value of each cell
+  // calculate the number of each cell
   for (let row = 0; row < 9; row++) {
     for (let col = 0; col < 9; col++) {
       const cell = cells[row][col];
@@ -31,29 +31,37 @@ const generateCells = () => {
         continue;
       }
 
-      // compute value;
+      // compute value for bomb placed in sourrounding 8 square;
       let counter = 0;
+      //top left
       if (row > 0 && col > 0 && cells[row - 1][col - 1].bomb) {
         counter++;
       }
+      //top
       if (row > 0 && cells[row - 1][col].bomb) {
         counter++;
       }
+      //top right
       if (row > 0 && col < 8 && cells[row - 1][col + 1].bomb) {
         counter++;
       }
+      //left
       if (col > 0 && cells[row][col - 1].bomb) {
         counter++;
       }
+      // right
       if (col < 8 && cells[row][col + 1].bomb) {
         counter++;
       }
+      // bottom left
       if (row < 8 && col > 0 && cells[row + 1][col - 1].bomb) {
         counter++;
       }
+      // bottom
       if (row < 8 && cells[row + 1][col].bomb) {
         counter++;
       }
+      // bottom right
       if (row < 8 && col < 8 && cells[row + 1][col + 1].bomb) {
         counter++;
       }
